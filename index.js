@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const authRoute = require("./routes").auth;
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ mongoose
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/api/user", authRoute);
 
 // 监听端口
 app.listen(8080, () => {
