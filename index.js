@@ -2,9 +2,11 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const authRoute = require("./routes").auth;
-
 dotenv.config();
+const authRoute = require("./routes").auth;
+const courseRoute = require("./routes").course;
+const passport = require("passport");
+require("./config/passport")(passport);
 
 //connect to DB
 mongoose
@@ -24,6 +26,11 @@ mongoose
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/user", authRoute);
+app.use(
+  "/api/courses",
+  passport.authenticate("jwt", { session: false }),
+  courseRoute
+);
 
 // 监听端口
 app.listen(8080, () => {
